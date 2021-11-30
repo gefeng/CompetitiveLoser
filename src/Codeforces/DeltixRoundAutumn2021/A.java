@@ -1,12 +1,32 @@
 import java.io.*;
 import java.util.*;
 
-public class X {
+public class A {
     void go() {
         // add code
+        int n = Reader.nextInt();
+        long[] arr = new long[n];
+        long ans = 0;
+        long pow = 1;
+        for(int i = 0; i < n; i++) {
+            arr[i] = Reader.nextInt();
+            while(arr[i] % 2 == 0) {
+                arr[i] /= 2;
+                pow *= 2;
+            }
+        }
+
+        Arrays.sort(arr);
+
+        for(int i = 0; i < n - 1; i++) {
+            ans += arr[i];
+        }
+        ans += arr[n - 1] * pow;
+
+        Writer.println(ans);
     }
     void solve() {
-        go();
+        for(int T = Reader.nextInt(); T > 0; T--) go();
     }
     void run() throws Exception {
         Reader.init(System.in);
@@ -16,7 +36,7 @@ public class X {
     }
 
     public static void main(String[] args) throws Exception {
-        new X().run();
+        new A().run();
     }
 
     public static class Reader {
@@ -43,6 +63,10 @@ public class X {
             return Integer.parseInt(next());
         }
 
+        public static long nextLong() {
+            return Long.parseLong(next());
+        }
+
         public static double nextDouble() {
             return Double.parseDouble(next());
         }
@@ -59,8 +83,24 @@ public class X {
             pw.print(s);
         }
 
+        public static void print(int x) {
+            pw.print(x);
+        }
+
+        public static void print(long x) {
+            pw.print(x);
+        }
+
         public static void println(String s) {
             pw.println(s);
+        }
+
+        public static void println(int x) {
+            pw.println(x);
+        }
+
+        public static void println(long x) {
+            pw.println(x);
         }
 
         public static void close() {
