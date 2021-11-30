@@ -2,29 +2,74 @@ import java.io.*;
 import java.util.*;
 
 public class A {
+    void go() {
+        // add code
+        int n = Reader.nextInt();
+        String res = (n % 2 == 0 && n - 2 > 0) ? "YES" : "NO";
+        Writer.println(res);
+    }
     void solve() {
         go();
     }
-    void go() {
-        // add code
-        int n = Integer.parseInt(st.nextToken());
-        String res = (n % 2 == 0 && n - 2 > 0) ? "YES" : "NO";
-        out.println(res);
-    }
     void run() throws Exception {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        st = new StringTokenizer(reader.readLine());
-        out = new PrintWriter(new BufferedOutputStream(System.out));
+        Reader.init(System.in);
+        Writer.init(System.out);
         solve();
-        out.close();
+        Writer.close();
     }
 
     public static void main(String[] args) throws Exception {
         new A().run();
     }
 
-    public static StringTokenizer st;
-    public static PrintWriter out;
+    public static class Reader {
+        public static StringTokenizer st;
+        public static BufferedReader br;
+
+        public static void init(InputStream in) {
+            br = new BufferedReader(new InputStreamReader(in));
+            st = new StringTokenizer("");
+        }
+
+        public static String next() {
+            while(!st.hasMoreTokens()) {
+                try {
+                    st = new StringTokenizer(br.readLine());
+                } catch (IOException e) {
+                    throw new InputMismatchException();
+                }
+            }
+            return st.nextToken();
+        }
+
+        public static int nextInt() {
+            return Integer.parseInt(next());
+        }
+
+        public static double nextDouble() {
+            return Double.parseDouble(next());
+        }
+    }
+
+    public static class Writer {
+        public static PrintWriter pw;
+
+        public static void init(OutputStream os) {
+            pw = new PrintWriter(new BufferedOutputStream(os));
+        }
+
+        public static void print(String s) {
+            pw.print(s);
+        }
+
+        public static void println(String s) {
+            pw.println(s);
+        }
+
+        public static void close() {
+            pw.close();
+        }
+    }
 
 //    private byte[] inBuf = new byte[1024];
 //    private int lenBuf = 0;
