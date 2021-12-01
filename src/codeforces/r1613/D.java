@@ -1,31 +1,17 @@
-package Codeforces.DeltixRoundAutumn2021;
+package codeforces.r1613;
 
 import java.io.*;
 import java.util.*;
 
-public class A {
+public class D {
+    private static final long MOD = 998244353L;
     void go() {
         // add code
         int n = Reader.nextInt();
-        long[] arr = new long[n];
-        long ans = 0;
-        long pow = 1;
+        int[] arr = new int[n];
         for(int i = 0; i < n; i++) {
             arr[i] = Reader.nextInt();
-            while(arr[i] % 2 == 0) {
-                arr[i] /= 2;
-                pow *= 2;
-            }
         }
-
-        Arrays.sort(arr);
-
-        for(int i = 0; i < n - 1; i++) {
-            ans += arr[i];
-        }
-        ans += arr[n - 1] * pow;
-
-        Writer.println(ans);
     }
     void solve() {
         for(int T = Reader.nextInt(); T > 0; T--) go();
@@ -38,7 +24,7 @@ public class A {
     }
 
     public static void main(String[] args) throws Exception {
-        new A().run();
+        new D().run();
     }
 
     public static class Reader {

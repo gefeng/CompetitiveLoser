@@ -1,17 +1,41 @@
-package Codeforces.CodeforcesBetaRound4;
+package codeforces.r1613;
 
 import java.io.*;
 import java.util.*;
 
-public class A {
+public class B {
+    private static final int MAX = (int)1e6;
     void go() {
-        // add code
         int n = Reader.nextInt();
-        String res = (n % 2 == 0 && n - 2 > 0) ? "YES" : "NO";
-        Writer.println(res);
+        int m = n / 2;
+        int[] arr = new int[n];
+        boolean[] exist = new boolean[MAX + 1];
+
+        for(int i = 0; i < n; i++) {
+            arr[i] = Reader.nextInt();
+            exist[arr[i]] = true;
+        }
+
+        Arrays.sort(arr);
+
+        for(int i = 0; i < n; i++) {
+            for(int j = 0; j < i; j++) {
+                int rem = arr[i] % arr[j];
+                if(!exist[rem]) {
+                    Writer.println(arr[i] + " " + arr[j]);
+                    m--;
+                    if(m == 0) {
+                        break;
+                    }
+                }
+            }
+            if(m == 0) {
+                break;
+            }
+        }
     }
     void solve() {
-        go();
+        for(int T = Reader.nextInt(); T > 0; T--) go();
     }
     void run() throws Exception {
         Reader.init(System.in);
@@ -21,7 +45,7 @@ public class A {
     }
 
     public static void main(String[] args) throws Exception {
-        new A().run();
+        new B().run();
     }
 
     public static class Reader {
@@ -48,6 +72,10 @@ public class A {
             return Integer.parseInt(next());
         }
 
+        public static long nextLong() {
+            return Long.parseLong(next());
+        }
+
         public static double nextDouble() {
             return Double.parseDouble(next());
         }
@@ -64,49 +92,28 @@ public class A {
             pw.print(s);
         }
 
+        public static void print(int x) {
+            pw.print(x);
+        }
+
+        public static void print(long x) {
+            pw.print(x);
+        }
+
         public static void println(String s) {
             pw.println(s);
+        }
+
+        public static void println(int x) {
+            pw.println(x);
+        }
+
+        public static void println(long x) {
+            pw.println(x);
         }
 
         public static void close() {
             pw.close();
         }
     }
-
-//    private byte[] inBuf = new byte[1024];
-//    private int lenBuf = 0;
-//    private int ptrBuf = 0;
-//
-//    private int readByte() {
-//
-//    }
-//
-//    public static class FastWriter {
-//        private static final int BUF_SIZE = 1 << 13;
-//        private final byte[] buf = new byte[BUF_SIZE];
-//        private final OutputStream out;
-//        private int ptr = 0;
-//
-//        public FastWriter(OutputStream os) {
-//            this.out = os;
-//        }
-//
-//        private void innerFlush() {
-//            try {
-//                out.write(buf, 0, ptr);
-//                ptr = 0;
-//            } catch (IOException e) {
-//                throw new RuntimeException("flush");
-//            }
-//        }
-//
-//        public void flush() {
-//            innerFlush();
-//            try {
-//                out.flush();
-//            } catch (IOException e) {
-//                throw new RuntimeException("flush");
-//            }
-//        }
-//    }
 }
