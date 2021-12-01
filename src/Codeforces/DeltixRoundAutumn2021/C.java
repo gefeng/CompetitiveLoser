@@ -3,53 +3,54 @@ package Codeforces.DeltixRoundAutumn2021;
 import java.io.*;
 import java.util.*;
 
-public class B {
+public class C {
+    private static final int MAX = (int)1e6;
+    private boolean primes[] = new boolean[MAX + 1];
     void go() {
+        // add code
         int n = Reader.nextInt();
-        int m = Reader.nextInt();
-        char[] s = Reader.next().toCharArray();
+        int e = Reader.nextInt();
+        int[] arr = new int[n];
+        long ans = 0;
 
-        int tot = 0;
+        int max = 0;
         for(int i = 0; i < n; i++) {
-            if(i > 0 && i < n - 1) {
-                if(s[i - 1] == 'a' && s[i] == 'b' && s[i + 1] == 'c') {
-                    tot++;
+            arr[i] = Reader.nextInt();
+        }
+
+        for(int i = 0; i < n; i++) {
+            boolean pri = primes[arr[i]];
+            if(pri) {
+                long cntL = 0;
+                long cntR = 0;
+
+                // to right
+                for(int j = i + e; j < n; j += e) {
+                    if(arr[j] == 1) {
+                        cntR++;
+                    } else {
+                        break;
+                    }
                 }
+
+                // to left
+                for(int j = i - e; j >= 0; j -= e) {
+                    if(arr[j] == 1) {
+                        cntL += cntR + 1;
+                    } else {
+                        break;
+                    }
+                }
+
+                ans += cntL + cntR;
             }
         }
-        // abcabc
-        for(int i = 0; i < m; i++) {
-            int pos = Reader.nextInt() - 1;
-            char c = Reader.next().charAt(0);
 
-            if(s[pos] != c) {
-                if (s[pos] == 'a' && pos + 2 < n && s[pos + 1] == 'b' && s[pos + 2] == 'c') {
-                    tot--;
-                }
-                if (s[pos] == 'b' && pos + 1 < n && pos - 1 >= 0 && s[pos - 1] == 'a' && s[pos + 1] == 'c') {
-                    tot--;
-                }
-                if (s[pos] == 'c' && pos - 2 >= 0 && s[pos - 1] == 'b' && s[pos - 2] == 'a') {
-                    tot--;
-                }
-
-                if (c == 'a' && pos + 2 < n && s[pos + 1] == 'b' && s[pos + 2] == 'c') {
-                    tot++;
-                }
-                if (c == 'b' && pos + 1 < n && pos - 1 >= 0 && s[pos - 1] == 'a' && s[pos + 1] == 'c') {
-                    tot++;
-                }
-                if (c == 'c' && pos - 2 >= 0 && s[pos - 1] == 'b' && s[pos - 2] == 'a') {
-                    tot++;
-                }
-            }
-
-            s[pos] = c;
-            Writer.println(tot);
-        }
+        Writer.println(ans);
     }
     void solve() {
-        go();
+        sieve();
+        for(int T = Reader.nextInt(); T > 0; T--) go();
     }
     void run() throws Exception {
         Reader.init(System.in);
@@ -58,8 +59,22 @@ public class B {
         Writer.close();
     }
 
+    private void sieve() {
+        Arrays.fill(primes, true);
+        primes[0] = false;
+        primes[1] = false;
+
+        for(int i = 2; i * i <= MAX; i++) {
+            if(primes[i]) {
+                for(int j = i * i; j <= MAX; j += i) {
+                    primes[j] = false;
+                }
+            }
+        }
+    }
+
     public static void main(String[] args) throws Exception {
-        new B().run();
+        new C().run();
     }
 
     public static class Reader {

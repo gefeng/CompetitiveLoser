@@ -3,49 +3,53 @@ package Codeforces.DeltixRoundAutumn2021;
 import java.io.*;
 import java.util.*;
 
-public class B {
+public class D {
     void go() {
         int n = Reader.nextInt();
-        int m = Reader.nextInt();
-        char[] s = Reader.next().toCharArray();
+        int d = Reader.nextInt();
+        int[][] edges = new int[d][2];
+        DSU dsu = new DSU(n + 1);
 
-        int tot = 0;
-        for(int i = 0; i < n; i++) {
-            if(i > 0 && i < n - 1) {
-                if(s[i - 1] == 'a' && s[i] == 'b' && s[i + 1] == 'c') {
-                    tot++;
-                }
-            }
+        for(int i = 0; i < d; i++) {
+            edges[i][0] = Reader.nextInt();
+            edges[i][1] = Reader.nextInt();
         }
-        // abcabc
-        for(int i = 0; i < m; i++) {
-            int pos = Reader.nextInt() - 1;
-            char c = Reader.next().charAt(0);
 
-            if(s[pos] != c) {
-                if (s[pos] == 'a' && pos + 2 < n && s[pos + 1] == 'b' && s[pos + 2] == 'c') {
-                    tot--;
+        int free = 0;
+        for(int[] e : edges) {
+            int u = e[0];
+            int v = e[1];
+            int cnt = 0;
+
+            if(dsu.find(u) == dsu.find(v)) {
+                free++;
+            } else {
+                dsu.union(u, v);
+            }
+
+            Map<Integer, Integer> map = new HashMap<>();
+            if(free == 0) {
+                for(int i = 1; i <= n; i++) {
+                    int p = dsu.find(i);
+                    map.put(p, map.getOrDefault(p, 0) + 1);
+                    cnt = Math.max(cnt, map.get(p));
                 }
-                if (s[pos] == 'b' && pos + 1 < n && pos - 1 >= 0 && s[pos - 1] == 'a' && s[pos + 1] == 'c') {
-                    tot--;
-                }
-                if (s[pos] == 'c' && pos - 2 >= 0 && s[pos - 1] == 'b' && s[pos - 2] == 'a') {
-                    tot--;
+            } else {
+                for(int i = 1; i <= n; i++) {
+                    map.put(dsu.find(i), map.getOrDefault(dsu.find(i), 0) + 1);
                 }
 
-                if (c == 'a' && pos + 2 < n && s[pos + 1] == 'b' && s[pos + 2] == 'c') {
-                    tot++;
+                Queue<Integer> pq = new PriorityQueue<>(Comparator.reverseOrder());
+                for(int val : map.values()) {
+                    pq.offer(val);
                 }
-                if (c == 'b' && pos + 1 < n && pos - 1 >= 0 && s[pos - 1] == 'a' && s[pos + 1] == 'c') {
-                    tot++;
-                }
-                if (c == 'c' && pos - 2 >= 0 && s[pos - 1] == 'b' && s[pos - 2] == 'a') {
-                    tot++;
+
+                for(int i = 0; i <= free; i++) {
+                    cnt += pq.poll();
                 }
             }
 
-            s[pos] = c;
-            Writer.println(tot);
+            Writer.println(cnt - 1);
         }
     }
     void solve() {
@@ -58,8 +62,37 @@ public class B {
         Writer.close();
     }
 
+    private class DSU {
+        private int[] p;
+        private int[] w;
+        private int n;
+        DSU(int n) {
+            this.n = n;
+            p = new int[n];
+            w = new int[n];
+            Arrays.fill(p, -1);
+        }
+        private int find(int i) {
+            if(p[i] < 0) return i;
+            return p[i] = find(p[i]);
+        }
+        private void union(int i, int j) {
+            int x = find(i);
+            int y = find(j);
+            if(x == y) return;
+            if(w[x] == w[y]) {
+                p[y] = x;
+                w[x] += 1;
+            } else if(w[x] > w[y]) {
+                p[y] = x;
+            } else {
+                p[x] = y;
+            }
+        }
+    }
+
     public static void main(String[] args) throws Exception {
-        new B().run();
+        new D().run();
     }
 
     public static class Reader {
@@ -84,10 +117,6 @@ public class B {
 
         public static int nextInt() {
             return Integer.parseInt(next());
-        }
-
-        public static long nextLong() {
-            return Long.parseLong(next());
         }
 
         public static double nextDouble() {
