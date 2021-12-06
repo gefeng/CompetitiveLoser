@@ -4,33 +4,37 @@ import java.io.*;
 import java.util.*;
 
 public class B {
-    private static final int MAX = (int)1e6;
+    /**
+     * Observation:
+     *  1. x % y < y which means if we pick the smallest number in the array as y, we are guarantied the remainder
+     *  is not in the array.
+     *  2. In addition, there is at least n - 1 pairs if we fix y with the smallest value in the array and n - 1 >= n / 2.
+     *
+     * Time:  O(N)
+     * Space: O(N)
+     * */
     void go() {
         int n = Reader.nextInt();
         int m = n / 2;
         int[] arr = new int[n];
-        boolean[] exist = new boolean[MAX + 1];
+        int min = Integer.MAX_VALUE;
+        int pos = -1;
 
         for(int i = 0; i < n; i++) {
             arr[i] = Reader.nextInt();
-            exist[arr[i]] = true;
+            if(arr[i] < min) {
+                min = arr[i];
+                pos = i;
+            }
         }
 
-        Arrays.sort(arr);
-
         for(int i = 0; i < n; i++) {
-            for(int j = 0; j < i; j++) {
-                int rem = arr[i] % arr[j];
-                if(!exist[rem]) {
-                    Writer.println(arr[i] + " " + arr[j]);
-                    m--;
-                    if(m == 0) {
-                        break;
-                    }
+            if(i != pos) {
+                Writer.println(arr[i] + " " + min);
+                m--;
+                if(m == 0) {
+                    break;
                 }
-            }
-            if(m == 0) {
-                break;
             }
         }
     }
