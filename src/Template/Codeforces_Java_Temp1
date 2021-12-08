@@ -59,6 +59,10 @@ public class X {
                 pw.print(s);
             }
 
+            public static void print(char c) {
+                pw.print(c);
+            }
+
             public static void print(int x) {
                 pw.print(x);
             }
@@ -69,6 +73,10 @@ public class X {
 
             public static void println(String s) {
                 pw.println(s);
+            }
+
+            public static void println(char c) {
+                pw.println(c);
             }
 
             public static void println(int x) {
