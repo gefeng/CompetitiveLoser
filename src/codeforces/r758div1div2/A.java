@@ -1,3 +1,5 @@
+package codeforces.r758div1div2;
+
 import java.io.*;
 import java.util.*;
 
@@ -5,32 +7,10 @@ public class A {
     void go() {
         // add code
         int n = Reader.nextInt();
-        int l = Reader.nextInt();
-        int r = Reader.nextInt();
-        int k = Reader.nextInt();
-
-        int[] cb = new int[n];
         for(int i = 0; i < n; i++) {
-            cb[i] = Reader.nextInt();
+            if(i < n - 1) Writer.print((i + 2) + " ");
+            else Writer.print((i + 2) + "\n");
         }
-
-        Arrays.sort(cb);
-
-        int ans = 0;
-        for(int i = 0; i < n; i++) {
-            if(cb[i] < l || cb[i] > r) {
-                continue;
-            }
-
-            if(k - cb[i] >= 0) {
-                k -= cb[i];
-                ans++;
-            } else {
-                break;
-            }
-        }
-
-        Writer.println(ans);
     }
     void solve() {
         for(int T = Reader.nextInt(); T > 0; T--) go();

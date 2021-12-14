@@ -1,69 +1,47 @@
-package codeforces.r1613;
+package codeforces.r758div1div2;
 
 import java.io.*;
 import java.util.*;
 
-public class D {
-    /**
-     * Valid MEX sequence:
-     *  codeforces.r757div2.codeforces.r758div1div2.A. 0..0 1..1 2..2 x-1..x-1 x..x
-     *  codeforces.r757div2.codeforces.r758div1div2.B. 0..0 1..1 2..2 x-1..x-1 x+1..x+1 x-1..x-1
-     *
-     * state:
-     *  dp1[i][j] denotes # sequences on type codeforces.r757div2.codeforces.r758div1div2.A on prefix of length i with MEX equal to j
-     *  dp2[i][j] denotes # sequences on type codeforces.r757div2.codeforces.r758div1div2.B on prefix of length i with MEX equal to j
-     * transition:
-     *  0 1 2 3    +4   x == j
-     *  0 1 2 3     3   x == j - 1
-     *  0 1 2 3     5   x == j + 1
-     *  pre: dp[i - 1][j]
-     *  if x == j - 1 dp1[i - 1][j] -> dp1[i][j]
-     *  if x == j     dp1[i - 1][j] -> dp1[i][j + 1]
-     *  if x == j + 1 dp1[i - 1][j] -> dp2[i][j]
-     *  0 1 2 4 +2/4
-     *  if x == j - 1 dp2[i - 1][j] -> dp2[i][j]
-     *  if x == j + 1 dp2[i - 1][j] -> dp2[i][j]
-     * */
-    private static final int MOD = 998244353;
+public class C {
     void go() {
         // add code
         int n = Reader.nextInt();
-        int ans = -1;
+        int[][] s1 = new int[n][2];
+        int[] s2 = new int[n];
 
-        int[] dp1 = new int[n + 2];
-        int[] dp2 = new int[n + 2];
-
-        dp1[0] = 1;
-
-        for(int i = 1; i <= n; i++) {
-            int x = Reader.nextInt();
-
-            // previous mex = x + 1
-            dp1[x + 1] = add(dp1[x + 1], dp1[x + 1]);   // 0 1 2 3  +3
-            dp2[x + 1] = add(dp2[x + 1], dp2[x + 1]);   // 0 1 2 4  +2
-
-            // previous mex = x
-            dp1[x + 1] = add(dp1[x + 1], dp1[x]);       // 0 1 2 3  +4
-
-            // previous mex = x - 1
-            if(x > 0) {
-                dp2[x - 1] = add(dp2[x - 1], dp2[x - 1]);  // 0 1 2 4 2  +4
-                dp2[x - 1] = add(dp2[x - 1], dp1[x - 1]);
-            }
+        for(int i = 0; i < n; i++) {
+            s1[i][0] = Reader.nextInt();
+            s1[i][1] = i;
+        }
+        for(int i = 0; i < n; i++) {
+            s2[i] = Reader.nextInt();
         }
 
-        for(int i = 0; i <= n + 1; i++) {
-            ans = add(ans, dp1[i]);
-            ans = add(ans, dp2[i]);
+        Arrays.sort(s1, Comparator.comparingInt(a -> a[0]));
+
+        int[] l = new int[n];
+        int max = 0;
+        for(int i = 0; i < n; i++) {
+            int idx = s1[i][1];
+            max = Math.max(max, s2[idx]);
+            l[i] = max;
         }
 
-        Writer.println(ans);
-    }
+        int[] ans = new int[n];
+        int min = s2[s1[n - 1][1]];
+        ans[s1[n - 1][1]] = 1;
+        for(int i = n - 2; i >= 0; i--) {
+            int idx = s1[i][1];
+            if(l[i] > min) ans[idx] = 1;
+            min = Math.min(min, s2[idx]);
+        }
 
-    private int add(int x, int y) {
-        return (x + y) % MOD;
+        for(int i = 0; i < n; i++) {
+            Writer.print(ans[i]);
+        }
+        Writer.print("\n");
     }
-
     void solve() {
         for(int T = Reader.nextInt(); T > 0; T--) go();
     }
@@ -75,7 +53,7 @@ public class D {
     }
 
     public static void main(String[] args) throws Exception {
-        new D().run();
+        new C().run();
     }
 
     public static class Reader {
@@ -122,6 +100,10 @@ public class D {
             pw.print(s);
         }
 
+        public static void print(char c) {
+            pw.print(c);
+        }
+
         public static void print(int x) {
             pw.print(x);
         }
@@ -132,6 +114,10 @@ public class D {
 
         public static void println(String s) {
             pw.println(s);
+        }
+
+        public static void println(char c) {
+            pw.println(c);
         }
 
         public static void println(int x) {
