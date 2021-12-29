@@ -1,58 +1,67 @@
-package codeforces.r761div2;
+package codeforces.r762div3;
 
 import java.io.*;
 import java.util.*;
 
 public class D {
-    int q(int a, int b, int c) {
-        Writer.println("? " + a + " " + b + " " + c);
-        Writer.flush();
-        return Reader.nextInt();
+    private boolean isOk(long[][] g, int m, int n, long min) {
+        int atMost = Math.min(n - 1, m);
+        int cnt = 0;
+        Set<Integer> shops = new HashSet<>();
+
+        for(int i = 0; i < n; i++) {
+            Set<Integer> set = new HashSet<>();
+            for(int j = 0; j < m; j++) {
+                if(g[j][i] >= min) {
+                    set.add(j);
+                }
+            }
+            if(set.isEmpty()) return false;
+
+            boolean needMore = true;
+            for(int x : set) {
+                if(shops.contains(x)) {
+                    needMore = false;
+                    break;
+                }
+            }
+            if(needMore) {
+                shops.addAll(set);
+                cnt++;
+            }
+        }
+
+        return cnt <= Math.min(n - 1, m);
     }
     void go() {
+        //Reader.next();
+        int m = Reader.nextInt();
         int n = Reader.nextInt();
-
-        int pre = -1;
-        int imp = -1;
-        int cre = -1;
-        for(int i = 0; i < n; i++) {
-            int a = i + 1;
-            int b = (i + 1) % n + 1;
-            int c = (i + 2) % n + 1;
-            int cur = q(a, b, c);
-
-            //1 2 3 = 1/2 3 4 = 0
-            if(pre != -1 && pre != cur) {
-                if(cur == 0) {
-                    cre = a - 1;
-                    imp = c;
-                } else {
-                    imp = a - 1;
-                    cre = c;
-                }
-                break;
+        long[][] g = new long[m][n];
+        //Writer.println(m + " " + n);
+        long lo = Long.MAX_VALUE;
+        long hi = 0;
+        for(int i = 0; i < m; i++) {
+            for(int j = 0; j < n; j++) {
+                g[i][j] = Reader.nextLong();
+                lo = Math.min(lo, g[i][j]);
+                hi = Math.max(hi, g[i][j]);
             }
-
-            pre = cur;
         }
+        //System.out.println(lo + " " + hi);
+        long ans = 0;
+        while(lo <= hi) {
+            long mid = lo + hi >> 1;
 
-        List<Integer> ans = new ArrayList<>();
-        ans.add(imp);
-        for(int i = 0; i < n; i++) {
-            if(i + 1 != imp && i + 1 !=  cre) {
-                int res = q(i + 1, imp, cre);
-                if(res == 0) {
-                    ans.add(i + 1);
-                }
+            if(isOk(g, m, n, mid)) {
+                ans = mid;
+                lo = mid + 1;
+            } else {
+                hi = mid - 1;
             }
         }
 
-        Writer.print("! " + ans.size() + " ");
-        for(int i = 0; i < ans.size(); i++) {
-            if(i < n - 1) Writer.print(ans.get(i) + " ");
-            else Writer.print(ans.get(i) + "\n");
-        }
-        Writer.flush();
+        Writer.println(ans);
     }
     void solve() {
         for(int T = Reader.nextInt(); T > 0; T--) go();
@@ -138,10 +147,6 @@ public class D {
 
         public static void println(long x) {
             pw.println(x);
-        }
-
-        public static void flush() {
-            pw.flush();
         }
 
         public static void close() {

@@ -1,58 +1,33 @@
-package codeforces.r761div2;
+package codeforces.er119div2;
 
 import java.io.*;
 import java.util.*;
 
-public class D {
-    int q(int a, int b, int c) {
-        Writer.println("? " + a + " " + b + " " + c);
-        Writer.flush();
-        return Reader.nextInt();
-    }
+public class A {
     void go() {
-        int n = Reader.nextInt();
+        String s = Reader.next();
+        int n = s.length();
 
-        int pre = -1;
-        int imp = -1;
-        int cre = -1;
-        for(int i = 0; i < n; i++) {
-            int a = i + 1;
-            int b = (i + 1) % n + 1;
-            int c = (i + 2) % n + 1;
-            int cur = q(a, b, c);
+        char x = s.charAt(0);
+        char z = s.charAt(n - 1);
 
-            //1 2 3 = 1/2 3 4 = 0
-            if(pre != -1 && pre != cur) {
-                if(cur == 0) {
-                    cre = a - 1;
-                    imp = c;
-                } else {
-                    imp = a - 1;
-                    cre = c;
-                }
-                break;
-            }
-
-            pre = cur;
+        int cnt = 0;
+        for(int i = 1; i < n - 1; i++) {
+            cnt += s.charAt(i) == 'N' ? 1 : 0;
         }
 
-        List<Integer> ans = new ArrayList<>();
-        ans.add(imp);
-        for(int i = 0; i < n; i++) {
-            if(i + 1 != imp && i + 1 !=  cre) {
-                int res = q(i + 1, imp, cre);
-                if(res == 0) {
-                    ans.add(i + 1);
-                }
-            }
+        if(x == 'E' && z == 'E') {
+            if(cnt == 1) Writer.println("NO");
+            else Writer.println("YES");
+        } else if(x == 'E' && z == 'N') {
+            if(cnt == 0) Writer.println("NO");
+            else Writer.println("YES");
+        } else if(x == 'N' && z == 'N') {
+            Writer.println("YES");
+        } else {
+            if(cnt == 0) Writer.println("NO");
+            else Writer.println("YES");
         }
-
-        Writer.print("! " + ans.size() + " ");
-        for(int i = 0; i < ans.size(); i++) {
-            if(i < n - 1) Writer.print(ans.get(i) + " ");
-            else Writer.print(ans.get(i) + "\n");
-        }
-        Writer.flush();
     }
     void solve() {
         for(int T = Reader.nextInt(); T > 0; T--) go();
@@ -65,7 +40,7 @@ public class D {
     }
 
     public static void main(String[] args) throws Exception {
-        new D().run();
+        new A().run();
     }
 
     public static class Reader {
@@ -138,10 +113,6 @@ public class D {
 
         public static void println(long x) {
             pw.println(x);
-        }
-
-        public static void flush() {
-            pw.flush();
         }
 
         public static void close() {

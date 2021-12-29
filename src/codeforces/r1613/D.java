@@ -6,12 +6,12 @@ import java.util.*;
 public class D {
     /**
      * Valid MEX sequence:
-     *  A. 0..0 1..1 2..2 x-1..x-1 x..x
-     *  B. 0..0 1..1 2..2 x-1..x-1 x+1..x+1 x-1..x-1
+     *  1. 0..0 1..1 2..2 x-1..x-1 x..x
+     *  2. 0..0 1..1 2..2 x-1..x-1 x+1..x+1 x-1..x-1
      *
      * state:
-     *  dp1[i][j] denotes # sequences on type A on prefix of length i with MEX equal to j
-     *  dp2[i][j] denotes # sequences on type B on prefix of length i with MEX equal to j
+     *  dp1[i][j] denotes # sequences on type 1 on prefix of length i with MEX equal to j
+     *  dp2[i][j] denotes # sequences on type 2 on prefix of length i with MEX equal to j
      * transition:
      *  0 1 2 3    +4   x == j
      *  0 1 2 3     3   x == j - 1

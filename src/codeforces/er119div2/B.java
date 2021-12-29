@@ -1,58 +1,51 @@
-package codeforces.r761div2;
+package codeforces.er119div2;
 
 import java.io.*;
 import java.util.*;
 
-public class D {
-    int q(int a, int b, int c) {
-        Writer.println("? " + a + " " + b + " " + c);
-        Writer.flush();
-        return Reader.nextInt();
-    }
+public class B {
     void go() {
-        int n = Reader.nextInt();
+        int w = Reader.nextInt();
+        int h = Reader.nextInt();
+        int k = Reader.nextInt();
+        long ans = 0;
 
-        int pre = -1;
-        int imp = -1;
-        int cre = -1;
-        for(int i = 0; i < n; i++) {
-            int a = i + 1;
-            int b = (i + 1) % n + 1;
-            int c = (i + 2) % n + 1;
-            int cur = q(a, b, c);
-
-            //1 2 3 = 1/2 3 4 = 0
-            if(pre != -1 && pre != cur) {
-                if(cur == 0) {
-                    cre = a - 1;
-                    imp = c;
-                } else {
-                    imp = a - 1;
-                    cre = c;
-                }
-                break;
-            }
-
-            pre = cur;
+        int[][] hp1 = new int[k][2];
+        for(int i = 0; i < k; i++) {
+            hp1[i][0] = Reader.nextInt();
+            hp1[i][1] = 0;
         }
 
-        List<Integer> ans = new ArrayList<>();
-        ans.add(imp);
-        for(int i = 0; i < n; i++) {
-            if(i + 1 != imp && i + 1 !=  cre) {
-                int res = q(i + 1, imp, cre);
-                if(res == 0) {
-                    ans.add(i + 1);
-                }
-            }
+        ans = Math.max(ans, ((long)hp1[k - 1][0] - hp1[0][0]) * h);
+
+        k = Reader.nextInt();
+        int[][] hp2 = new int[k][2];
+        for(int i = 0; i < k; i++) {
+            hp2[i][0] = Reader.nextInt();
+            hp2[i][1] = h;
         }
 
-        Writer.print("! " + ans.size() + " ");
-        for(int i = 0; i < ans.size(); i++) {
-            if(i < n - 1) Writer.print(ans.get(i) + " ");
-            else Writer.print(ans.get(i) + "\n");
+        ans = Math.max(ans, ((long)hp2[k - 1][0] - hp2[0][0]) * h);
+
+        k = Reader.nextInt();
+        int[][] vp1 = new int[k][2];
+        for(int i = 0; i < k; i++) {
+            vp1[i][0] = 0;
+            vp1[i][1] = Reader.nextInt();
         }
-        Writer.flush();
+
+        ans = Math.max(ans, ((long)vp1[k - 1][1] - vp1[0][1]) * w);
+
+        k = Reader.nextInt();
+        int[][] vp2 = new int[k][2];
+        for(int i = 0; i < k; i++) {
+            vp2[i][0] = w;
+            vp2[i][1] = Reader.nextInt();
+        }
+
+        ans = Math.max(ans, ((long)vp2[k - 1][1] - vp2[0][1]) * w);
+
+        Writer.println(ans);
     }
     void solve() {
         for(int T = Reader.nextInt(); T > 0; T--) go();
@@ -65,7 +58,7 @@ public class D {
     }
 
     public static void main(String[] args) throws Exception {
-        new D().run();
+        new B().run();
     }
 
     public static class Reader {
@@ -138,10 +131,6 @@ public class D {
 
         public static void println(long x) {
             pw.println(x);
-        }
-
-        public static void flush() {
-            pw.flush();
         }
 
         public static void close() {

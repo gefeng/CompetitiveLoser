@@ -1,9 +1,22 @@
+package codeforces.r762div3;
+
 import java.io.*;
 import java.util.*;
 
-public class X {
+public class B {
     void go() {
-        // add code
+        int n = Reader.nextInt();
+        Set<Long> set = new HashSet<>();
+
+        for(long i = 1; i * i <= n; i++) {
+            set.add(i * i);
+        }
+
+        for(long i = 2; i * i * i <= n; i++) {
+            set.add(i * i * i);
+        }
+
+        Writer.println(set.size());
     }
     void solve() {
         for(int T = Reader.nextInt(); T > 0; T--) go();
@@ -16,7 +29,7 @@ public class X {
     }
 
     public static void main(String[] args) throws Exception {
-        new X().run();
+        new B().run();
     }
 
     public static class Reader {
@@ -53,50 +66,46 @@ public class X {
     }
 
     public static class Writer {
-            public static PrintWriter pw;
+        public static PrintWriter pw;
 
-            public static void init(OutputStream os) {
-                pw = new PrintWriter(new BufferedOutputStream(os));
-            }
-
-            public static void print(String s) {
-                pw.print(s);
-            }
-
-            public static void print(char c) {
-                pw.print(c);
-            }
-
-            public static void print(int x) {
-                pw.print(x);
-            }
-
-            public static void print(long x) {
-                pw.print(x);
-            }
-
-            public static void println(String s) {
-                pw.println(s);
-            }
-
-            public static void println(char c) {
-                pw.println(c);
-            }
-
-            public static void println(int x) {
-                pw.println(x);
-            }
-
-            public static void flush() {
-                pw.flush();
-            }
-
-            public static void println(long x) {
-                pw.println(x);
-            }
-
-            public static void close() {
-                pw.close();
-            }
+        public static void init(OutputStream os) {
+            pw = new PrintWriter(new BufferedOutputStream(os));
         }
+
+        public static void print(String s) {
+            pw.print(s);
+        }
+
+        public static void print(char c) {
+            pw.print(c);
+        }
+
+        public static void print(int x) {
+            pw.print(x);
+        }
+
+        public static void print(long x) {
+            pw.print(x);
+        }
+
+        public static void println(String s) {
+            pw.println(s);
+        }
+
+        public static void println(char c) {
+            pw.println(c);
+        }
+
+        public static void println(int x) {
+            pw.println(x);
+        }
+
+        public static void println(long x) {
+            pw.println(x);
+        }
+
+        public static void close() {
+            pw.close();
+        }
+    }
 }

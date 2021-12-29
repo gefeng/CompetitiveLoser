@@ -1,58 +1,70 @@
-package codeforces.r761div2;
+package codeforces.r762div3;
 
 import java.io.*;
 import java.util.*;
 
-public class D {
-    int q(int a, int b, int c) {
-        Writer.println("? " + a + " " + b + " " + c);
-        Writer.flush();
-        return Reader.nextInt();
+public class E {
+    private int upperBound(int[] arr, int t) {
+        int lo = 0;
+        int hi = arr.length - 1;
+        int idx = arr.length;
+        while(lo <= hi) {
+            int mid = lo + hi >> 1;
+            if(arr[mid] > t) {
+                idx = mid;
+                hi = mid - 1;
+            } else {
+                lo = mid + 1;
+            }
+        }
+        return idx;
+    }
+    private int lowerBound(int[] arr, int t) {
+        int lo = 0;
+        int hi = arr.length - 1;
+        int idx = -1;
+        while(lo <= hi) {
+            int mid = lo + hi >> 1;
+            if(arr[mid] < t) {
+                idx = mid;
+                lo = mid + 1;
+            } else {
+                hi = mid - 1;
+            }
+        }
+        return idx;
     }
     void go() {
         int n = Reader.nextInt();
+        int[] arr = new int[n];
+        int[] ans = new int[n + 1];
+        Arrays.fill(ans, -1);
 
-        int pre = -1;
-        int imp = -1;
-        int cre = -1;
         for(int i = 0; i < n; i++) {
-            int a = i + 1;
-            int b = (i + 1) % n + 1;
-            int c = (i + 2) % n + 1;
-            int cur = q(a, b, c);
-
-            //1 2 3 = 1/2 3 4 = 0
-            if(pre != -1 && pre != cur) {
-                if(cur == 0) {
-                    cre = a - 1;
-                    imp = c;
-                } else {
-                    imp = a - 1;
-                    cre = c;
-                }
-                break;
-            }
-
-            pre = cur;
+            arr[i] = Reader.nextInt();
         }
 
-        List<Integer> ans = new ArrayList<>();
-        ans.add(imp);
-        for(int i = 0; i < n; i++) {
-            if(i + 1 != imp && i + 1 !=  cre) {
-                int res = q(i + 1, imp, cre);
-                if(res == 0) {
-                    ans.add(i + 1);
+        Arrays.sort(arr);
+
+        boolean gap = false;
+        for(int i = 0; i <= n; i++) {
+            String padding = i == n ? "\n" : " ";
+
+            if(gap) {
+                Writer.print("-1" + padding);
+            } else {
+                int lb = lowerBound(arr, i);
+                int ub = upperBound(arr, i);
+
+                if(i < n && arr[i] > i) {
+                    gap = true;
                 }
+
+                Writer.print((ub - lb - 1) + padding);
             }
         }
 
-        Writer.print("! " + ans.size() + " ");
-        for(int i = 0; i < ans.size(); i++) {
-            if(i < n - 1) Writer.print(ans.get(i) + " ");
-            else Writer.print(ans.get(i) + "\n");
-        }
-        Writer.flush();
+
     }
     void solve() {
         for(int T = Reader.nextInt(); T > 0; T--) go();
@@ -65,7 +77,7 @@ public class D {
     }
 
     public static void main(String[] args) throws Exception {
-        new D().run();
+        new E().run();
     }
 
     public static class Reader {
@@ -138,10 +150,6 @@ public class D {
 
         public static void println(long x) {
             pw.println(x);
-        }
-
-        public static void flush() {
-            pw.flush();
         }
 
         public static void close() {

@@ -1,58 +1,37 @@
-package codeforces.r761div2;
+package codeforces.er119div2;
 
 import java.io.*;
 import java.util.*;
 
 public class D {
-    int q(int a, int b, int c) {
-        Writer.println("? " + a + " " + b + " " + c);
-        Writer.flush();
-        return Reader.nextInt();
+    int getMinCoins(int t) {
+        int[] dp = new int[t + 1];
+        Arrays.fill(dp, t);
+        dp[0] = 0;
+        for(int i = 1; i < 4; i++) {
+            for(int j = 1; j <= t; j++) {
+                if(j - i >= 0)
+                dp[j] = Math.min(dp[j], dp[j - i] + 1);
+            }
+        }
+
+        return dp[t];
     }
+
     void go() {
         int n = Reader.nextInt();
+        int ans = 0;
+        TreeSet<Integer> cost = new TreeSet<>();
 
-        int pre = -1;
-        int imp = -1;
-        int cre = -1;
         for(int i = 0; i < n; i++) {
-            int a = i + 1;
-            int b = (i + 1) % n + 1;
-            int c = (i + 2) % n + 1;
-            int cur = q(a, b, c);
-
-            //1 2 3 = 1/2 3 4 = 0
-            if(pre != -1 && pre != cur) {
-                if(cur == 0) {
-                    cre = a - 1;
-                    imp = c;
-                } else {
-                    imp = a - 1;
-                    cre = c;
-                }
-                break;
-            }
-
-            pre = cur;
+            cost.add(Reader.nextInt());
         }
 
-        List<Integer> ans = new ArrayList<>();
-        ans.add(imp);
-        for(int i = 0; i < n; i++) {
-            if(i + 1 != imp && i + 1 !=  cre) {
-                int res = q(i + 1, imp, cre);
-                if(res == 0) {
-                    ans.add(i + 1);
-                }
-            }
+        for(int x : cost) {
+            ans = Math.max(ans, getMinCoins(x));
         }
 
-        Writer.print("! " + ans.size() + " ");
-        for(int i = 0; i < ans.size(); i++) {
-            if(i < n - 1) Writer.print(ans.get(i) + " ");
-            else Writer.print(ans.get(i) + "\n");
-        }
-        Writer.flush();
+        Writer.println(ans);
     }
     void solve() {
         for(int T = Reader.nextInt(); T > 0; T--) go();
@@ -138,10 +117,6 @@ public class D {
 
         public static void println(long x) {
             pw.println(x);
-        }
-
-        public static void flush() {
-            pw.flush();
         }
 
         public static void close() {
