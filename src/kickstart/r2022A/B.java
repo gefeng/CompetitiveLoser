@@ -1,9 +1,34 @@
+package kickstart.r2022A;
+
 import java.io.*;
 import java.util.*;
 
-public class Solution {
+public class B {
     void go(int T) {
-        // add code
+        String s = Reader.next();
+        int n = s.length();
+        String ans = "";
+
+        int sum = 0;
+        for(int i = 0; i < n; i++) {
+            sum += s.charAt(i) - '0';
+        }
+
+        int x = (9 - sum % 9) % 9;
+        if(x == 0) {
+            ans = s.substring(0, 1) + x + s.substring(1, n);
+        } else {
+            for(int i = 0; i < n; i++) {
+                if(s.charAt(i) - '0' > x) {
+                    ans = s.substring(0, i) + x + s.substring(i, n);
+                    break;
+                }
+            }
+
+            if(ans.isEmpty()) {
+                ans = s + x;
+            }
+        }
 
         Writer.println("Case #" + T + ": " + ans);
     }
@@ -19,7 +44,7 @@ public class Solution {
     }
 
     public static void main(String[] args) throws Exception {
-        new Solution().run();
+        new B().run();
     }
 
     public static class Reader {
