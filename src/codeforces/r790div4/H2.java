@@ -41,7 +41,6 @@ public class H2 {
 
         for(int i = 1; i <= n; i++) {
             ans += bit.query(A[i], n);
-            //System.out.println(bit.query(codeforces.r790div4.A[i] - 1) + " " + bit.query(codeforces.r790div4.A[n]));
             bit.update(A[i]);
         }
 
