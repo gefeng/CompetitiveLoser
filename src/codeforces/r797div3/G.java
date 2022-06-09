@@ -1,0 +1,150 @@
+package codeforces.r797div3;
+
+import java.io.*;
+import java.util.*;
+
+public class G {
+    void go() {
+        int n = Reader.nextInt();
+        int m = Reader.nextInt();
+        int[] A = new int[n];
+        int[][] Q = new int[m][2];
+
+        for(int i = 0; i < n; i++) {
+            A[i] = Reader.nextInt();
+        }
+
+        for(int i = 0; i < m; i++) {
+            Q[i] = new int[] {Reader.nextInt(), Reader.nextInt()};
+        }
+
+        TreeSet<Integer> train = new TreeSet<>();
+        train.add(0);
+        for(int i = 1; i < n; i++) {
+            int j = train.lower(i);
+            if(A[j] > A[i]) {
+                train.add(i);
+            }
+        }
+
+        for(int i = 0; i < m; i++) {
+            int[] q = Q[i];
+            int j = q[0] - 1;
+            A[j] -= q[1];
+            
+            Integer fk = train.floor(j);
+            if(fk != null && A[fk] > A[j]) {
+                train.add(j);
+            }
+            
+            while(true) {
+                Integer k = train.higher(j);
+                if(k == null || A[k] < A[j]) { 
+                    break;
+                }
+                train.remove(k);
+            }
+
+            Writer.print(train.size());
+            if(i == m - 1) {
+                Writer.print("\n");
+            } else {
+                Writer.print(" ");
+            }
+        }
+    }
+    void solve() {
+        for(int T = Reader.nextInt(); T > 0; T--) go();
+    }
+    void run() throws Exception {
+        Reader.init(System.in);
+        Writer.init(System.out);
+        solve();
+        Writer.close();
+    }
+
+    public static void main(String[] args) throws Exception {
+        new G().run();
+    }
+
+    public static class Reader {
+        public static StringTokenizer st;
+        public static BufferedReader br;
+
+        public static void init(InputStream in) {
+            br = new BufferedReader(new InputStreamReader(in));
+            st = new StringTokenizer("");
+        }
+
+        public static String next() {
+            while(!st.hasMoreTokens()) {
+                try {
+                    st = new StringTokenizer(br.readLine());
+                } catch (IOException e) {
+                    throw new InputMismatchException();
+                }
+            }
+            return st.nextToken();
+        }
+
+        public static int nextInt() {
+            return Integer.parseInt(next());
+        }
+
+        public static long nextLong() {
+            return Long.parseLong(next());
+        }
+
+        public static double nextDouble() {
+            return Double.parseDouble(next());
+        }
+    }
+
+    public static class Writer {
+            public static PrintWriter pw;
+
+            public static void init(OutputStream os) {
+                pw = new PrintWriter(new BufferedOutputStream(os));
+            }
+
+            public static void print(String s) {
+                pw.print(s);
+            }
+
+            public static void print(char c) {
+                pw.print(c);
+            }
+
+            public static void print(int x) {
+                pw.print(x);
+            }
+
+            public static void print(long x) {
+                pw.print(x);
+            }
+
+            public static void println(String s) {
+                pw.println(s);
+            }
+
+            public static void println(char c) {
+                pw.println(c);
+            }
+
+            public static void println(int x) {
+                pw.println(x);
+            }
+
+            public static void flush() {
+                pw.flush();
+            }
+
+            public static void println(long x) {
+                pw.println(x);
+            }
+
+            public static void close() {
+                pw.close();
+            }
+        }
+}
