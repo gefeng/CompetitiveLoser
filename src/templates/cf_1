@@ -43,6 +43,10 @@ public class X {
             return Integer.parseInt(next());
         }
 
+        public static long nextLong() {
+            return Long.parseLong(next());
+        }
+        
         public static double nextDouble() {
             return Double.parseDouble(next());
         }
